@@ -14,7 +14,7 @@ sphere{
     1//radius
     texture{
         pigment{
-            rgb<0,1,1>
+            rgb<0,.75,1>
             } 
     }
     }
