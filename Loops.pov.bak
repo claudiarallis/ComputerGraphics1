@@ -1,0 +1,17 @@
+background {
+    rgb<0,1,1>
+    }
+
+#declare FrontCameraPos=<0,0,-10>;
+#declare SideCameraPos =<5,0,0>;
+
+camera{
+    location FrontCameraPos
+    look_at<0,0,0>
+    }
+
+light_source{
+    <2,5,-2>
+    rgb<1,1,1>
+    }
+    

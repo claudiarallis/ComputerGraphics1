@@ -26,71 +26,62 @@ plane{
     0//distance from the origin
     texture{
     pigment{
-        rgb<0,0,.5>
+        rgb<0,.1,.5>
         }
         }
     }
-
-#declare MainCone = cone{
-    <0,0,0>//point 1
-    1.25//radius of point 1
-    <0,3,0>//point 2
-    .75//radius of point 2 
-    }; 
-    
+        
 #declare IceBox = box{
-    <-1,-1,-1>  //important that box is centered about the origin
-    <1,1,1>
+    <-2.5,0,-2.5>  
+    <2.5,.5,2.5>
     };
+          
+#declare IceWhite=texture{
+    pigment{
+        rgbf <.9,.9,1,.3>
+        }
+        };
+
+union{
+    object{
+        IceBox
+        rotate <0,0,0>
+        translate <0,0,0> //translate last
+        texture{IceWhite}
+    } 
+    object{
+        IceBox
+        rotate <0,25,0>
+        translate <0,0,0> //translate last
+        texture{IceWhite}
+    }
+    object{
+        IceBox
+        scale <.94,1,.94>
+        rotate <0,40,0>
+        translate <0,0,0> //translate last
+        texture{IceWhite}
+    }
+    }
     
 #declare Black=texture{
     pigment{
         rgb <.1,.1,.1>
         }
-        };
-          
-#declare IceWhite=texture{
-    pigment{
-        rgb <.9,.9,1>
-        }
-        };
+        }; 
 
-object{
-    IceBox
-    scale <2.5,1,2.5>
-    rotate <0,0,0>
-    translate <0,-.5,0> //translate last
-    texture{IceWhite}
-} 
-
-object{
-    IceBox
-    scale <2.5,1,2.5>
-    rotate <0,25,0>
-    translate <0,-.5,0> //translate last
-    texture{IceWhite}
-}
-
-object{
-    IceBox
-    scale <2.25,1,2.25>
-    rotate <0,40,0>
-    translate <0,-.5,0> //translate last
-    texture{IceWhite}
-}
-
-object{
-    MainCone
+cone{
+    <0,.5,0>//point 1
+    1.25//radius of point 1
+    <0,3,0>//point 2
+    .75//radius of point 2 
     texture{Black}
     }        
 
-#declare Head =sphere{
+
+sphere{
     <0,1.75,0>//center
     .85//radius
-    };
-
-object{
-    Head
     texture{Black}
     translate<0,1.5,0>
     } 
@@ -116,7 +107,7 @@ object{
     }
 
 #declare Foot =box{
-    <0,0,-.4>
+    <0,.5,-.4>
     <.5,.65,0>
     texture{
         pigment{
@@ -153,7 +144,7 @@ cone{
     <1,-1.5,-0.6>
     0.5
     <0,0,-0.6>
-    0.75
+    0.8
     texture{
         pigment{
             rgb<1,1,1>
