@@ -164,17 +164,13 @@ cone{
     }
     };
     
-object{
+
+difference{
+    object{
     Eye
     translate<-.35,0,0>
     }
-    
-object{
-    Eye
-    translate<.35,0,0>
-    }
-
-object{
+    object{
     Eye
     texture{
         pigment{
@@ -184,8 +180,14 @@ object{
     scale<.5,.5,.5>
     translate<-.35,1.8,-.55>
     }
-
-object{
+    }
+    
+difference{    
+    object{
+    Eye
+    translate<.35,0,0>
+    }
+    object{
     Eye
     texture{
         pigment{
@@ -194,4 +196,5 @@ object{
             }
     scale<.5,.5,.5> 
     translate<.35,1.8,-.55>
+    }
     }
