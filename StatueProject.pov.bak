@@ -11,7 +11,7 @@ camera{
     look_at <0,1,0> 
     } 
     
-light_source{    //light source #1
+/*light_source{    //light source #1
     <2,7,-3>
     rgb <1,1,1>  
     }
@@ -19,7 +19,16 @@ light_source{    //light source #1
 light_source{   //light source #2
     <3,5,-4>
     rgb <.5,.5,.6>
-    }
+    }*/ 
+    
+#declare DirectionalLight=light_source{
+    <100,100,-100>
+    rgb<1,1,1>*1.75
+    parallel
+    point_at<0,0,0>
+    }; 
+
+light_source{DirectionalLight} 
     
 plane{     //ocean
     <0,1,0>

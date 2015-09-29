@@ -21,14 +21,36 @@ light_source{   //light source #2
     rgb <.5,.5,.6>
     }*/ 
     
+#declare FillLight= light_source{
+    <-4,4,-4>
+    rgb<.8,.9,1> *.5 
+    spotlight
+    radius 10
+    falloff 20
+    shadowless
+    };
+    
+light_source{FillLight}    
+    
 #declare DirectionalLight=light_source{
-    <100,100,-100>
-    rgb<1,1,1>*1.75
+    <100,100,-100> *1.75
+    rgb<1,1,.8>
     parallel
-    point_at<0,0,0>
+    point_at<0,0,0>           
     }; 
 
-light_source{DirectionalLight} 
+light_source{DirectionalLight}
+
+#declare RimLight=light_source{
+    <0,12,4>
+    rgb<1,1,1> *.6
+    spotlight
+    radius 15
+    falloff 30
+    point_at<0,0,0>
+    };
+    
+light_source{RimLight} 
     
 plane{     //ocean
     <0,1,0>

@@ -116,6 +116,23 @@ light_source{ShadowlessLight}
     rotate <-20,0,0> 
     };
     
-    
+                                                    
+//sun yellow = .75, .75, .68     (reverse numbers for blue cast of sky light sources)                                         
+//"projected_through{OBJECT} will get rid of shadows
+//when making a room, you have directional light from sun and sky as well as "bounce lights" in the form of low-intensity spotlights that 'project through' the walls and simulate light bouncing around the room 
+//unrelated note, you can space things out around a circle by translating first, then rotating  
 
-//unrelated note, you can space things out around a circle by translating first, then rotating
+
+//Textures
+#include "textures.inc" 
+//the wood textures there aren't very good, so if you want wood, Google Seamless Wood Texture and map it on
+//color maps do gradienty stuff...go into the textures file to see how they work 
+    
+box{
+    <-1,-1,-1>
+    <1,1,1>
+    texture{Jade}
+    } 
+    
+//you can also add finishes under the texture thingy (like where you add pigments)
+//specular 1 will add a specular highlight to your object
