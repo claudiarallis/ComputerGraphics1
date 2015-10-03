@@ -1,0 +1,13 @@
+#declare RoomWidth=632;
+#declare RoomLength=1016;
+#declare RoomHeight=335;
+
+#declare HalfRoomWidth=RoomWidth/2;
+#declare HalfRoomLength=RoomLength/2;
+#declare SeatedEyeHeight=112;
+
+#declare CatLab=box{
+    <0,0,0>
+    <RoomWidth, RoomHeight, RoomLength>
+    };
+    

@@ -426,11 +426,19 @@
             ChairTexture
         }
     };
+    
+/*#declare LightLength=250;
+#declare LightWidth=10;
+#declare DistanceBetweenLights=150;
+#declare LightBox=box{
+    <0,0,0>
+    <LightLength,LightWidth,>
+    }; */
 
 #declare Margaret = <HalfRoomWidth, SeatedEyeHeight, 40>;
 #declare Justin = <HalfRoomWidth,SeatedEyeHeight,RoomLength-40>;
 camera {
-	location <RoomWidth*2, RoomHeight*2,-RoomLength>
+	location Justin
 	look_at <HalfRoomWidth,SeatedEyeHeight,HalfRoomLength>
 }
 background { rgb <0,1,1> }
@@ -439,7 +447,42 @@ background { rgb <0,1,1> }
 	rgb <1,1,1>
 }*/
 
+#declare SunLight=light_source{
+    <RoomWidth*2,RoomHeight*2,-RoomLength/2>
+    rgb<.8,.8,.75> 
+    parallel
+    point_at<HalfRoomWidth,SeatedEyeHeight,HalfRoomLength>
+    };
+    
+light_source{SunLight}   
 
+#declare NumSkyLights=6;
+#declare SkyLightPos=array[NumSkyLights] {<HalfRoomWidth,SeatedEyeHeight,HalfRoomLength>,
+                                            <RoomWidth/2, RoomHeight*2,-RoomLength>,
+                                            <0,RoomHeight*2,-RoomLength>,
+                                            <RoomWidth,RoomHeight,-RoomLength>,
+                                            <RoomWidth/2,RoomHeight,-RoomLength>,
+                                            <0,RoomHeight,-RoomLength>}
+#declare SkyLights=union{
+     #declare Index=0;
+     #while (Index <NumSkyLights)
+    light_source{
+    <RoomWidth/2,RoomHeight*2,-RoomLength>
+    rgb<.75,.75,.85>*.2
+    parallel
+    point_at <HalfRoomWidth,SeatedEyeHeight,HalfRoomLength> 
+    }   
+    #declare Index=Index+1;
+    #end   
+    };
+    
+light_source{SkyLights}
+
+plane{
+    <0,1,0>
+    0
+    texture{FloorTexture}
+    }
 
 object { 
 	Couch 
