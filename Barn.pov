@@ -1,3 +1,26 @@
+#include "colors.inc"
+
+#declare WoodColorMap=color_map{          //you can also do pigment maps, including stuff like brick and checkers
+    [0.1 color DarkWood]
+    [0.3 color LightWood]                //to create a sharp transition, assign two colors the same value
+    [0.6 color MediumWood]
+    [0.9 color DarkBrown]
+    };
+
+#declare WoodPigment=pigment{
+    wood 
+    color_map {WoodColorMap}
+    turbulence .2
+    scale <100,100,600>
+    };
+    
+#declare WoodPigment2=pigment{
+    wood 
+    color_map {WoodColorMap}
+    turbulence .2
+    scale <600,100,100>
+    };         
+
 #declare BarnWidth=1100;
 #declare BarnLength=1200;
 #declare BarnHeight=450;
@@ -9,6 +32,11 @@
 #declare Barn=box{
     <-HalfBarnWidth,0,-HalfBarnLength>
     <HalfBarnWidth,BarnHeight,HalfBarnLength>
+    };
+    
+#declare OuterBarn=object{
+    Barn
+    scale 1.001
     }; 
     
 #declare Aisle=box{
@@ -20,8 +48,13 @@
 #declare StallLength=399-HalfBarnLength;
 
 #declare Stall=box{
-    <-HalfBarnWidth+1,0,-HalfBarnLength+1>
+    <-HalfBarnWidth,0,-HalfBarnLength+1>
     <StallWidth,BarnHeight,StallLength>
+    }; 
+    
+#declare StallSpace=box{
+    <-HalfBarnWidth,0,-HalfBarnLength+5>
+    <StallWidth,BarnHeight,HalfBarnLength-5>
     };
     
 #declare FrontStallWindowLong=box{
@@ -29,15 +62,129 @@
     <-HalfBarnWidth+405,BarnHeight-150,HalfBarnLength-10>
     };
     
+#declare PannelHeight=25;
+    
+#declare FrontStallPannel=box{
+    <-HalfBarnWidth+398,0,-HalfBarnLength>
+    <-HalfBarnWidth+402,PannelHeight,HalfBarnLength>
+    texture{
+        pigment{
+            WoodPigment
+            }
+            }
+    }; 
+    
+#declare TwoLongPannels=union{
+    object{
+        FrontStallPannel}
+    object{
+        FrontStallPannel
+        translate <0,PannelHeight+1,0>
+        }
+        }; 
+    
+#declare NumPannels=15;
+#declare WoodWallLong=union{
+    #declare Index=-NumPannels;
+    #while (Index<=NumPannels)
+    object{
+        TwoLongPannels
+        translate<0,Index*(PannelHeight+1),0>
+    }
+    #declare Index=Index+1;
+    #end
+    }; 
+    
 #declare FrontStallWindowShort=box{
-    <148,BarnHeight-300,-200>
+    <146,BarnHeight-300,-200>
     <153,BarnHeight-150,HalfBarnLength-10>
     }; 
 
 #declare SideStallWindow=box{
-    <-HalfBarnWidth+10,BarnHeight-300,-StallLength-5>     
-    <-HalfBarnWidth+390,BarnHeight-150,-StallLength+5>
+    <-HalfBarnWidth,BarnHeight-300,-StallLength-5>     
+    <-HalfBarnWidth+401,BarnHeight-150,-StallLength+5>
+    }; 
+    
+#declare SideStallPannel=box{
+    <-HalfBarnWidth,0,-StallLength-2>
+    <-150,25,-StallLength+2>
+    texture{
+        pigment{
+            WoodPigment2
+            }
+            }
+            };     
+    
+#declare TwoShortPannels=union{
+    object{
+        SideStallPannel}
+    object{
+        SideStallPannel
+        translate <0,PannelHeight+1,0>
+        }
+        }; 
+    
+#declare WoodWallShort=union{
+    #declare Index=-NumPannels;
+    #while (Index<=NumPannels)
+    object{
+        TwoShortPannels
+        translate<0,Index*(PannelHeight+1),0>
+    }
+    #declare Index=Index+1;
+    #end
     };
+    
+#declare EndPannel=box{
+    <-HalfBarnWidth,0,-HalfBarnLength-2>
+    <HalfBarnWidth,25,-HalfBarnLength+2>
+    texture{
+        pigment{
+            WoodPigment2}
+            }
+            };
+            
+#declare TwoEndPannels=union{
+    object{
+        EndPannel}
+    object{
+        EndPannel
+        translate <0,PannelHeight+1,0>
+        }
+        }; 
+    
+#declare EndWall=union{
+    #declare Index=-NumPannels;
+    #while (Index<=NumPannels)
+    object{
+        TwoEndPannels
+        translate<0,Index*(PannelHeight+1),0>
+    }
+    #declare Index=Index+1;
+    #end
+    }; 
+    
+#declare StallBar=cylinder{
+    <0,BarnHeight-300,0>
+    <0,BarnHeight-150,0> 
+    1.5
+    texture{
+        pigment{
+            rgb<.1,.1,.1>
+            }
+            }
+    };
+    
+#declare TwoStallBars=union{
+    object{
+        StallBar}
+    object{
+        StallBar
+        translate<0,0,8>
+        }
+        };
+        
+object{TwoStallBars}                                              
     
 #declare OuterWindow=box{
     <-HalfBarnWidth+395,BarnHeight-250,10-HalfBarnLength>
@@ -46,8 +193,8 @@
     };
     
 #declare StallDoorOpening=box{
-    <-HalfBarnWidth+395,3,-400>
-    <-HalfBarnWidth+401,BarnHeight-150,-200>
+    <-HalfBarnWidth+396,0,-400>
+    <-HalfBarnWidth+403,BarnHeight-150,-200>
     };   
 
 #declare MainDoorWidth=-275;
@@ -69,13 +216,13 @@
 
 camera{
     location FrontEntry
-    look_at  CentralCameraPos
+    look_at CentralCameraPos
     }   
     
-light_source{
+/*light_source{
     <0,BarnHeight-10,0>
     rgb<1,1,1> *.5
-    } 
+    }  */
     
 #declare SunLight=light_source{
     <BarnWidth*2,BarnHeight*2,-BarnLength/2>
@@ -84,7 +231,7 @@ light_source{
     point_at<HalfBarnWidth,EyeHeight,HalfBarnLength>
     };
     
-light_source{SunLight}   
+//light_source{SunLight}   
 
 #declare NumSkyLights=5;
 #declare SkyLightPos=array[NumSkyLights] {<-BarnWidth,0,BarnLength>
@@ -167,14 +314,14 @@ light_source{SkyLights3}
 light_source{SkyLights4}
 
 #declare BounceLight1=light_source{
-    <-BarnWidth/3,BarnHeight*1.25,-HalfBarnLength-50>
+    <-BarnWidth/3,BarnHeight+400,-HalfBarnLength-50>
     rgb<1,1,1>  //multiplying this by 2 will change intensity
     spotlight
     radius 10 //this is an angle, not a distance.
     falloff 100000 //distance from center of light to edge of light (higher falloff in relation to radius -> fuzzy edges)
     tightness 10 //higher values will dim the light as it approaches the falloff edge
     point_at<-BarnWidth/3,BarnHeight/2,250>
-    projected_through {Barn}
+  projected_through {Barn}
     };     
     
 #declare BounceLight2=light_source{
@@ -204,16 +351,26 @@ light_source{BounceLight1}
 light_source{BounceLight2}
 light_source{BounceLight3}
 
-background{rgb<0,.25,.55>}    
+background{rgb<0,.25,.55>}
 
-difference{
+
+/*difference{
+    //object{OuterBarn             //outer wall} 
     object{
-        Barn             //outer wall
-        scale 1.001}
-    /*object{Barn
-        translate<0,BarnHeight-5,0>}*/             //inner wall
+        Barn
+        }
+    object{Barn
+        translate<0,BarnHeight-1,0>}             
     object{
         Aisle}
+    object{
+        StallSpace
+        translate <0,0,0>
+        }
+    object{
+        StallSpace
+        translate <0,0,0>
+        }
     object{    
         Stall}
     object{
@@ -224,10 +381,10 @@ difference{
         Stall
         translate<0,0,401>
         }
-    /*object{
+    object{
         Stall
         translate<700,0,0>
-        }*/
+        }
     object{
         Stall
         translate<700,0,800>
@@ -249,7 +406,7 @@ difference{
     object{
         SideStallWindow
         translate<700,0,0>
-        }
+        } 
     object{
         StallDoorOpening}
     object{
@@ -282,7 +439,7 @@ difference{
         }
     texture{
         pigment{
-            rgb<1,1,1>
+           rgb<1,1,1>
             }
         finish{
             diffuse .5
@@ -290,7 +447,148 @@ difference{
             roughness 10
             }
             }
+            } */
+            
+
+#declare BarnWallBaseStructure=difference{
+       object{
+            Barn}
+       object{
+            Barn
+            scale .999
             }
+       texture{
+            pigment{
+                rgb<1,1,1>
+                }
+                }     
+            };            
+
+#declare OuterBarnWalls=union{
+    object{
+        BarnWallBaseStructure}
+    object{
+        EndWall}
+    object{
+        EndWall
+        translate<0,0,BarnLength>
+        }
+    object{
+        WoodWallLong
+        translate<-HalfBarnWidth-StallWidth,0,0>
+        }
+    object{
+        WoodWallLong
+        translate<HalfBarnWidth+150,0,0>
+        } 
+        };
+
+#declare OuterBarn=difference{
+    object{
+        OuterBarnWalls}
+    object{Barn
+        translate<0,BarnHeight-10,0>}
+    object{
+        MainDoorwayCutout}
+    object{
+        MainDoorwayCutout
+        translate<0,0,-BarnLength>
+        }
+    object{
+        OuterWindow}
+    object{
+        OuterWindow
+        translate<1100,0,0>
+        }
+        };        
             
-            
+/*difference{
+    object{
+        Barn
+        }
+    object{
+        Barn
+        scale .999
+        }
+    object{Barn
+        translate<0,BarnHeight-10,0>}
+        object{
+        MainDoorwayCutout}
+    object{
+        MainDoorwayCutout
+        translate<0,0,-BarnLength>
+        }
+    object{
+        OuterWindow}
+    object{
+        OuterWindow
+        translate<1100,0,0>
+        }
+    texture{
+        pigment{
+           rgb<1,1,1>
+            }
+        }
+        }*/
+        
+object{OuterBarn}        
+
+difference{        
+    object{
+        WoodWallLong}
+    object{
+        FrontStallWindowLong
+        }
+     object{
+        StallDoorOpening}
+    object{
+        StallDoorOpening
+        translate<0,0,400>
+        }
+    object{
+        StallDoorOpening
+        translate<0,0,800>
+        }   
+    }
+                   
+difference{                   
+    object{
+        WoodWallLong
+        translate <300,0,0>
+    }
+    object{
+        FrontStallWindowShort}
+    object{
+        StallDoorOpening
+        translate<301,0,400>
+        }
+    object{
+        StallDoorOpening
+        translate<301,0,800>
+        }
+        }
+
+#declare StallSide=difference{
+    object{
+        WoodWallShort}
+    object{
+        SideStallWindow}
+        };
+        
+object{StallSide}
+
+object{
+    StallSide
+    translate <0,0,-400>
+    }
     
+object{
+    StallSide
+    translate <700,0,0>
+    }
+    
+object{
+    WoodWallShort
+    translate <700,0,-400>  
+    }                                
+     

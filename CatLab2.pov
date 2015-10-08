@@ -478,11 +478,11 @@ light_source{SunLight}
     
 light_source{SkyLights}
 
-/*plane{
+plane{
     <0,1,0>
     0
     texture{FloorTexture}
-    }*/
+    }
 
 object { 
 	Couch 
