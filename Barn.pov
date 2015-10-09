@@ -72,23 +72,14 @@
             WoodPigment
             }
             }
-    }; 
-    
-#declare TwoLongPannels=union{
-    object{
-        FrontStallPannel}
-    object{
-        FrontStallPannel
-        translate <0,PannelHeight+1,0>
-        }
-        }; 
+    };  
     
 #declare NumPannels=15;
 #declare WoodWallLong=union{
     #declare Index=-NumPannels;
     #while (Index<=NumPannels)
     object{
-        TwoLongPannels
+        FrontStallPannel
         translate<0,Index*(PannelHeight+1),0>
     }
     #declare Index=Index+1;
@@ -115,20 +106,11 @@
             }
             };     
     
-#declare TwoShortPannels=union{
-    object{
-        SideStallPannel}
-    object{
-        SideStallPannel
-        translate <0,PannelHeight+1,0>
-        }
-        }; 
-    
 #declare WoodWallShort=union{
     #declare Index=-NumPannels;
     #while (Index<=NumPannels)
     object{
-        TwoShortPannels
+        SideStallPannel
         translate<0,Index*(PannelHeight+1),0>
     }
     #declare Index=Index+1;
@@ -138,35 +120,28 @@
 #declare EndPannel=box{
     <-HalfBarnWidth,0,-HalfBarnLength-2>
     <HalfBarnWidth,25,-HalfBarnLength+2>
-    texture{
-        pigment{
-            WoodPigment2}
-            }
-            };
-            
-#declare TwoEndPannels=union{
-    object{
-        EndPannel}
-    object{
-        EndPannel
-        translate <0,PannelHeight+1,0>
-        }
-        }; 
+    }; 
     
 #declare EndWall=union{
     #declare Index=-NumPannels;
     #while (Index<=NumPannels)
     object{
-        TwoEndPannels
+        EndPannel
         translate<0,Index*(PannelHeight+1),0>
+        texture{
+        pigment{
+            WoodPigment2
+            translate <Index*20, Index*40, Index*6>
+            }
+       }
     }
     #declare Index=Index+1;
     #end
     }; 
     
 #declare StallBar=cylinder{
-    <0,BarnHeight-300,0>
-    <0,BarnHeight-150,0> 
+    <-150,BarnHeight-300,0>
+    <-150,BarnHeight-150,0> 
     1.5
     texture{
         pigment{
@@ -175,17 +150,45 @@
             }
     };
     
-#declare TwoStallBars=union{
-    object{
-        StallBar}
+#declare NumBars=40;    
+#declare StallBars=union{
+    #declare Index=-NumBars;
+    #while (Index<=NumBars)
     object{
         StallBar
-        translate<0,0,8>
-        }
-        };
-        
-object{TwoStallBars}                                              
+        translate<0,0,Index*15>
+       }
+    #declare Index=Index+1;
+    #end
+    };
+     
+#declare NumBars2=13;    
+#declare StallBars2=union{
+    #declare Index=-NumBars2;
+    #while (Index<=NumBars2)
+    object{
+        StallBar
+        translate<Index*15,0,0>
+       }
+    #declare Index=Index+1;
+    #end
+    };        
     
+#declare StallDoorBase=box{
+    <-HalfBarnWidth+403,0,-400>
+    <-HalfBarnWidth+409,BarnHeight-125,-200>
+    };
+    
+#declare StallDoorWindow=box{
+    <-HalfBarnWidth+402,BarnHeight-300,-390>
+    <-HalfBarnWidth+410,BarnHeight-150,-210>
+    };
+    
+#declare StallDoorWindowed=difference{
+    object{StallDoorBase}
+    object{StallDoorWindow}
+    };
+
 #declare OuterWindow=box{
     <-HalfBarnWidth+395,BarnHeight-250,10-HalfBarnLength>
     <-HalfBarnWidth+405,BarnHeight-150,HalfBarnLength-10>
@@ -231,7 +234,7 @@ camera{
     point_at<HalfBarnWidth,EyeHeight,HalfBarnLength>
     };
     
-//light_source{SunLight}   
+light_source{SunLight}   
 
 #declare NumSkyLights=5;
 #declare SkyLightPos=array[NumSkyLights] {<-BarnWidth,0,BarnLength>
@@ -486,8 +489,8 @@ background{rgb<0,.25,.55>}
 #declare OuterBarn=difference{
     object{
         OuterBarnWalls}
-    object{Barn
-        translate<0,BarnHeight-10,0>}
+    /*object{Barn
+        translate<0,BarnHeight-10,0>}*/
     object{
         MainDoorwayCutout}
     object{
@@ -531,15 +534,28 @@ background{rgb<0,.25,.55>}
         }
         }*/
         
-object{OuterBarn}        
+object{OuterBarn}           
 
-difference{        
+#declare InnerWallUnbarred=difference{        
     object{
         WoodWallLong}
     object{
         FrontStallWindowLong
         }
-     object{
+    };
+    
+#declare InnerWallBarred=union{
+    object{
+        InnerWallUnbarred}
+    object{
+        StallBars}
+        };                                                                             
+                    
+        
+difference{
+    object{
+        InnerWallBarred}
+    object{
         StallDoorOpening}
     object{
         StallDoorOpening
@@ -548,23 +564,36 @@ difference{
     object{
         StallDoorOpening
         translate<0,0,800>
-        }   
-    }
+        } 
+        }                   
+
+#declare InnerWallUnbarredShort=difference{
+    object{
+        WoodWallLong
+        translate<300,0,0>}
+    object{
+        FrontStallWindowShort}
+        };
+        
+#declare InnerWallBarredShort=union{
+    object{
+        InnerWallUnbarredShort}
+    object{
+        StallBars
+        translate<300,0,0>}
+        };                      
                    
 difference{                   
     object{
-        WoodWallLong
-        translate <300,0,0>
+        InnerWallBarredShort
     }
     object{
-        FrontStallWindowShort}
-    object{
         StallDoorOpening
-        translate<301,0,400>
+            translate<301,0,400>
         }
     object{
         StallDoorOpening
-        translate<301,0,800>
+            translate<301,0,800>
         }
         }
 
@@ -590,5 +619,17 @@ object{
 object{
     WoodWallShort
     translate <700,0,-400>  
-    }                                
-     
+    } 
+    
+object{StallBars2
+    translate<-215,0,-200>} 
+
+object{
+    StallBars2
+    translate<-215,0,200>}
+    
+object{
+    StallBars2
+    translate<515,0,200>
+    }                                          
+   
