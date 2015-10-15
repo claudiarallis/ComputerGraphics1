@@ -65,8 +65,8 @@
 #declare PannelHeight=25;
     
 #declare FrontStallPannel=box{
-    <-HalfBarnWidth+398,0,-HalfBarnLength>
-    <-HalfBarnWidth+402,PannelHeight,HalfBarnLength>
+    <-HalfBarnWidth+397,0,-HalfBarnLength>
+    <-HalfBarnWidth+403,PannelHeight,HalfBarnLength>
     texture{
         pigment{
             WoodPigment
@@ -88,7 +88,7 @@
     
 #declare FrontStallWindowShort=box{
     <146,BarnHeight-300,-200>
-    <153,BarnHeight-150,HalfBarnLength-10>
+    <155,BarnHeight-150,HalfBarnLength-10>
     }; 
 
 #declare SideStallWindow=box{
@@ -97,8 +97,8 @@
     }; 
     
 #declare SideStallPannel=box{
-    <-HalfBarnWidth,0,-StallLength-2>
-    <-150,25,-StallLength+2>
+    <-HalfBarnWidth,0,-StallLength-3>
+    <-150,25,-StallLength+3>
     texture{
         pigment{
             WoodPigment2
@@ -196,8 +196,8 @@
     };
     
 #declare StallDoorOpening=box{
-    <-HalfBarnWidth+396,0,-400>
-    <-HalfBarnWidth+403,BarnHeight-150,-200>
+    <-HalfBarnWidth+395,0,-400>
+    <-HalfBarnWidth+404,BarnHeight-150,-200>
     };   
 
 #declare MainDoorWidth=-275;

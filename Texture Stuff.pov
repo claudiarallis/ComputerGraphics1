@@ -124,9 +124,43 @@ sphere{
     texture{
         WoodPigment
         }
-   /*finish{
+    /*finish{
         ambient .02     //good for making things look like they glow
         specular.3       //changes highlight intensity
         roughness.04}*/    //changes the size of the specular highlight
-        }
+        normal{       
+            //bumps  //just what it sounds like
+            facets    //makes it look like a cut gem (though only in texture, not in shape)
+                coords 1.0
+                size .1
+            //bump_map{jpeg "filename.jpg"}     //will give it a texture based on some file from the internet
+                //bump_size 2.0      //search for seamless normal maps. yes, they're supposed to look like 3-d images
+                //scale 10 
+            }
+        } 
         
+     /*texture{          //to map an image onto an object, do this for texture...
+        pigment{           //may need to be fiddled with in terms of scaling and such
+            image_map{jpeg"nameoffile.jpg" //the file MUST be in the same folder as the script 
+            */     
+            
+     //search uv mapping checker to get a pattern to map onto things to help determine proper scales/transforms of a wrapped image       
+     //when searching for textures on Google Images, include the word seamless
+     //this mapping stuff could be good for doing windows...
+     //look for mathced pairs of texture and normal maps (in online libraries and such)
+                   
+                   
+//__________cameras____________
+
+/*camera{
+    perspective  //all rays in the scene start from the camera and are angled; this is the default setting
+    location <0,1,-1>    //can also be orthographic, w/ rays coming into the scene parallel; no perspective/depth
+    look_at<0,1,0>       //also fisheye, which is what it sounds like
+    angle //things appear closer/farther; alters angle of rays to plane that determines pixelly things; default=67.38
+    focal_point BoxPos //default=origin; this is the point that is in focus
+    aperture .1 //makes things not in focus blurry; default=0 (no blur); larger values = more blurry
+    blur_samples 20  //higher values = less grainy blur
+    normal{         //warps the picture
+        bumps 0.2   //increasing this value warps it more
+        }           //the focal point should be about a third of the way into a scene
+    } */                   

@@ -1,7 +1,17 @@
 //==================================================
 //Material definitions
-#declare Cherries1_MappedPigment = pigment { color rgb <.9,0,.1>*1.15 };
-
+#declare Cherries1_MappedPigment = pigment { color rgb <.9,0,.05>*1.15 };
+      
+#declare Cherry1ColorMap=color_map{          
+    [0.1 color rgb <.9,0,.05>*1.15]                //to create a sharp transition, assign two colors the same value
+    [0.95 color rgb <.9,0,.05>*1.15]
+    [0.95 color rgb <0.9,0.8,0.5>]
+    };
+#declare Cherry1Pigment=pigment{
+    color_map {Cherry1ColorMap}
+    scale .01
+    };          
+      
 #declare Cherries1_Finish = finish {
 	specular 0.7 //Max highlight intensity: 0 -> 1
       roughness 0.01 //surface roughness: 0.0005 -> 1             
@@ -9,7 +19,7 @@
 
 #declare Cherries1_Material_ = material {
 	texture {
-		pigment { uv_mapping Cherries1_MappedPigment }
+		pigment { uv_mapping Cherries1_MappedPigment }  //Cherries1_MappedPigment
 		finish { Cherries1_Finish }
 	}
 }
@@ -186,7 +196,7 @@
 #declare Pear_MappedPigment = pigment { color rgb <0.80,0.75,0.06> }
 
 
-#declare ColorMap=color_map{       
+#declare PearColorMap=color_map{       
     [0.1 color rgb<0.80,0.75,0.06>]
     [0.3 color rgb<0.80,0.75,0.06>]                
     [0.6 color rgb<0.80,0.75,0.06>]
@@ -194,7 +204,7 @@
     };
 #declare PearBumpsPigment=pigment{
     bumps
-    color_map {ColorMap}
+    color_map {PearColorMap}
     scale .03
     turbulence .5
     };
@@ -225,7 +235,7 @@
 	}
 }
 //==================================================
-#declare LeftGrapes_MappedPigment = pigment { color rgb <0.63,0.88,0.36> }
+#declare LeftGrapes_MappedPigment = pigment { color rgb <0.73,0.78,0.26> }
 
 #declare LeftGrapes_Finish = finish {
 	specular 0.6 //Max highlight intensity: 0 -> 1
@@ -328,7 +338,21 @@
 #declare Banana2_Finish = finish {
 	specular 0.4 //Max highlight intensity: 0 -> 1
       roughness 0.17 //surface roughness: 0.0005 -> 1             
-};
+}; 
+
+#declare Banana2ColorMap=color_map{       
+    [0.1 color rgb<0.89,0.74,0.06>*1.15]
+    [0.3 color rgb<0.89,0.74,0.06>*1.15]                
+    [0.6 color rgb<0.89,0.74,0.06>*1.15]
+    [0.9 color rgb<0.5,0.3,0>]
+    };
+#declare Banana2BumpsPigment=pigment{
+    bumps
+    color_map {PearColorMap}
+    scale .03
+    turbulence .5
+    };
+//#declare Banana2ColorMap2=pigment_map{    
 
 #declare Banana2_Material_ = material {
 	texture {
