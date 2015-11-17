@@ -55,7 +55,7 @@
 //the ceiling    
 #declare CeilingPannel=box{
     <-HalfBarnWidth,BarnHeight-4,-HalfBarnLength>
-    <HalfBarnWidth,BarnHeight,-HalfBarnLength+25>
+    <HalfBarnWidth,BarnHeight,-HalfBarnLength+35>
     texture{
         pigment{
             WoodPigment2
@@ -64,20 +64,19 @@
     };        
     
 #declare PannelHeight=25;
+#declare RoofPannelHeight=35;
 
-#declare NumRoofPannels=25;
+#declare NumRoofPannels=19;
 #declare Ceiling=union{
     #declare Index=-NumRoofPannels;
     #while (Index<=NumRoofPannels)
     object{
         CeilingPannel
-        translate<0,0,Index*(PannelHeight+1)>
+        translate<0,0,Index*(RoofPannelHeight+1)>
     }
     #declare Index=Index+1;
     #end
     };
-    
-              //PUT THIS AT THE END WITH THE REST
 
 //making the walls    
 #declare FrontStallPannel=box{
@@ -374,7 +373,23 @@
     rotate <180,0,0>
     translate <-143,100,-215>}                                   
     object{HandleShaft}
-    };                                  
+    }; 
+    
+#declare BlanketRack=object{
+    DoorHandle
+    translate<132,-100,215>
+    rotate<90,0,0>
+    scale<1,1,2.5>
+    translate<-127,115,-350>      //try to figure out how to change its color
+    texture{
+        pigment{
+            rgb<.9,.9,.9>
+            }
+        finish{
+            metallic
+            }
+            } 
+    };                                         
 
 #declare BarredStallDoor=union{
     object{StallDoorFrame}    
@@ -385,7 +400,8 @@
     object{RunnerThingy
         translate <0,0,-175>
         } 
-    object{DoorHandle}      
+    object{DoorHandle}
+    object{BlanketRack}      
     };                                       
     
 #declare StallDoorOpening=box{
@@ -504,7 +520,7 @@
     };
 
 //aisle lights
-#declare LightBox=box{
+/*#declare LightBox=box{
     <-130,BarnHeight-45,0>
     <130,BarnHeight-25,35>
     texture{
@@ -527,11 +543,26 @@
             ambient .9
             }    
             }
-    };  
+    };
+    
+#declare LightSupport=cylinder{
+    <-80,BarnHeight-25,0>
+    <-80,BarnHeight,0>
+    4
+    texture{
+        pigment{
+            rgb<.1,.1,.1>
+            }
+            }
+            };        
     
 #declare OverHeadLight=union{
     object{LightBox}
     object{Light}
+    object{LightSupport}
+object{LightSupport
+    translate<160,0,0>
+    }  
     };
                   
 object{OverHeadLight}
@@ -540,18 +571,87 @@ object{OverHeadLight
     }
 object{OverHeadLight
     translate <0,0,-350>
-    }                                            
+    }  */
     
+#declare LightSwitchBox=box{
+    <144,150,-HalfBarnLength+130>
+    <146,165,-HalfBarnLength+155>
+    texture{
+        pigment{
+            rgb<1,1,1>
+            }
+            }
+            };
+#declare LightSwitch=box{
+    <0,0,0>
+    <4,2,2>
+    texture{
+        pigment{
+            rgb<1,1,1>
+            }
+            }
+    rotate<0,0,45>
+    translate<142,154,-HalfBarnLength+135>        
+            };
+            
+#declare LightSwitchUnion=union{                                    
+    object{LightSwitchBox}
+    object{LightSwitch}
+    object{LightSwitch
+        translate<0,0,7>}                                                        
+    object{LightSwitch
+        translate<0,0,14>}
+        };
+object{LightSwitchUnion}
+
+//tack trunk
+#declare TrunkBase=prism{
+    linear_sweep
+    linear_spline
+    0,80
+    8
+    <0,0>
+    <0,45>
+    <12,53>
+    <24,55>
+    <36,53>
+    <48,45>
+    <48,0>
+    <0,0>
+    };
+    
+object{
+    TrunkBase
+    texture{
+        pigment{
+            rgb <.2,.1,.03>*.35
+            }
+            }
+    scale 1.35        
+    rotate<-90,0,0>
+    translate <80,-2,-160>        
+            } 
+#declare TackTrunkTrimLong=box{
+    <30,0,-160>
+    <32,5,-250>
+    texture{
+        pigment{
+            rgb<1,1,1>
+            }
+            }
+            };
+object{TackTrunkTrimLong}                           
+        
 
 #declare CentralCameraPos= <0,EyeHeight,0>;
 #declare OuterCameraPos= <0,650,-2000>;
 #declare BackEntry= <0,EyeHeight,HalfBarnLength>;
 #declare FrontEntry= <0,EyeHeight,-HalfBarnLength>;
-#declare TopCameraPos= <0,2000,0>;
+#declare TopCameraPos= <0,2000,0>;  
 
 camera{
     location FrontEntry
-    look_at CentralCameraPos
+    look_at <200,EyeHeight,0>                 
     }   
     
 light_source{
@@ -560,12 +660,12 @@ light_source{
     }  
     
 light_source{
-    <-80,BarnHeight-46,0>     //Flourescent Light_Middle
+    <-80,BarnHeight-46,0>     //Flourescent Light_Left
     rgb<1,1,1> *.25
     }  
     
 light_source{
-    <80,BarnHeight-46,0>     //Flourescent Light_Middle
+    <80,BarnHeight-46,0>     //Flourescent Light_Right
     rgb<1,1,1> *.25
     }          
     
@@ -699,7 +799,7 @@ light_source{BounceLight3}
 background{rgb<0,.25,.55>}
             
 
-#declare BarnWallBaseStructure=difference{
+/*#declare BarnWallBaseStructure=difference{
        object{
             Barn}
        object{
@@ -711,11 +811,11 @@ background{rgb<0,.25,.55>}
                 rgb<1,1,1>
                 }
                 }     
-            };            
+            };*/            
 
 #declare OuterBarnWalls=union{
-    object{
-        BarnWallBaseStructure}
+    /*object{
+        BarnWallBaseStructure}*/
     object{
         EndWall}
     object{
@@ -907,13 +1007,14 @@ object{
     } 
     
 object{TackRoomDoor
-    translate<0,0,-50>} 
+    scale .9
+    translate<14,0,-90>} 
 
 object{
     Doorknob
-    scale 3
+    scale 2.25
     rotate <0,0,90>
-    translate <147,160,-385>} 
+    translate <145,145,-385>} 
     
 object{Ceiling
     translate <0,0,HalfBarnLength>} 
@@ -926,4 +1027,4 @@ object{StallFloor
     translate <800,0,0>
     }
     
-//to be added: nameplates (image map?), shavings, blanket holders, hooks for halters, trunks, lights                                                     
+//add: nameplates (image map?) hooks for halters, trunk, door hinges(?), blankets, bird's nest?                                                   
