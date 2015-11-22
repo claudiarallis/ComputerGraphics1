@@ -462,7 +462,18 @@
         scale<0,.85,0>
         translate<0,150,60>
         }    
-    };    
+    };
+  
+difference{
+    object{TackRoomDoorBase
+        scale <.9,1.05,1.09>
+        translate<15,-32,-36>                                                 
+        }
+    object{TackRoomDoorBase                                                             
+        scale <1.5,.95,.93>
+        translate<-75,-14,-82>
+        }
+    }            
     
 #declare Doorknob=lathe{     
     cubic_spline 
@@ -497,10 +508,10 @@
 #declare AisleFloor=box{
     <-150,-1,-HalfBarnLength>
     <150,.5,HalfBarnLength>
-    texture{
+    /*texture{
         pigment{ConcretePigment
             }
-            }
+            }  */
     };
 
 //floor of stalls
@@ -520,7 +531,7 @@
     };
 
 //aisle lights
-/*#declare LightBox=box{
+#declare LightBox=box{
     <-130,BarnHeight-45,0>
     <130,BarnHeight-25,35>
     texture{
@@ -559,7 +570,7 @@
 #declare OverHeadLight=union{
     object{LightBox}
     object{Light}
-    object{LightSupport}
+    object{LightSupport}                                                    //LIGHTS
 object{LightSupport
     translate<160,0,0>
     }  
@@ -571,7 +582,7 @@ object{OverHeadLight
     }
 object{OverHeadLight
     translate <0,0,-350>
-    }  */
+    }  
     
 #declare LightSwitchBox=box{
     <144,150,-HalfBarnLength+130>
@@ -602,7 +613,6 @@ object{OverHeadLight
     object{LightSwitch
         translate<0,0,14>}
         };
-object{LightSwitchUnion}
 
 //tack trunk
 #declare TrunkBase=prism{
@@ -626,21 +636,193 @@ object{
         pigment{
             rgb <.2,.1,.03>*.35
             }
+        finish{
+            roughness 4
+            }    
             }
     scale 1.35        
     rotate<-90,0,0>
     translate <80,-2,-160>        
-            } 
-#declare TackTrunkTrimLong=box{
-    <30,0,-160>
-    <32,5,-250>
+            }
+#declare TackTrunkEnd=prism{
+    linear_sweep
+    linear_spline
+    0,2
+    8
+    <0,0>
+    <0,45>
+    <12,53>
+    <24,55>
+    <36,53>
+    <48,45>
+    <48,0>
+    <0,0>
     texture{
         pigment{
-            rgb<1,1,1>
+            rgb<.13,.1,.1>*.75
+            }
+            }
+    };   
+#declare TackTrunkEndTrim=difference{
+    object{TackTrunkEnd
+        scale <1.35,1,1.35>
+        rotate<-90,0,0>}
+    object{TackTrunkEnd
+        scale <1.12,3,1.13>
+        rotate<-90,0,0>
+        translate<6,6,2>}
+    };                
+#declare TackTrunkTrimBig=box{
+    <79,0,-159>
+    <146,6,-269>
+    texture{
+        pigment{
+            rgb<.13,.1,.1>*.75
+            }
+            }
+            };             
+#declare TackTrunkTrimLong=box{
+    <78,0,-159>
+    <79,5,-268>
+    texture{
+        pigment{
+            rgb<.13,.1,.1> *.75
             }
             }
             };
-object{TackTrunkTrimLong}                           
+object{TackTrunkEndTrim
+    translate<80,0,-266.5>
+    }
+object{TackTrunkEndTrim
+    translate<80,0,-159>
+    }                
+object{TackTrunkTrimBig}
+object{TackTrunkTrimBig
+    scale .99
+    translate<1,40,-2>
+    }
+object{TackTrunkTrimLong
+    translate <1,55,0>
+    } 
+object{TackTrunkTrimLong
+    translate <66,55,0>
+    }    
+object{TackTrunkTrimLong
+    rotate <0,0,-55>
+    translate <34,124,0>
+    }
+object{TackTrunkTrimLong
+    rotate<0,0,55>
+    translate<100,-5,0>
+    }
+object{TackTrunkTrimLong
+    rotate<0,0,55>
+    translate<88,3,0>
+    } 
+object{TackTrunkTrimLong
+    rotate<0,0,-55>
+    translate <47,132,0> 
+    } 
+object{TackTrunkTrimLong
+    rotate<0,0,75>
+    translate<98,-4,0>
+    } 
+object{TackTrunkTrimLong
+    rotate<0,0,-75>
+    translate<88,148,0>
+    }
+#declare TackTrunkLatch=union{
+    box{
+        <75,45,-185>     
+        <76,50,-189>    
+        }
+    cylinder{
+        <75,45,-187>     
+        <76,45,-187>
+        2
+        }
+    texture{
+        pigment{
+            rgb<.13,.1,.1>
+            }
+            }
+        };            
+object{TackTrunkLatch}
+object{TackTrunkLatch
+    scale <1,1.5,1.5>
+    translate<2,-27,65>
+    }
+object{TackTrunkLatch
+    translate<0,0,-55>
+    }
+    
+//the barn swallows' nest
+#declare NestBitSq=mesh2{
+    vertex_vectors{
+        9
+        <-1,1,-.5>//vertex 0
+        <0,1,.5>    //order here doesn't matter
+        <-1,0,.25>
+        <0,0,.5>
+        <1,0,0>//vertex 4 
+        <1,1,-.5>
+        <-1,-1,-1>
+        <0,-1,-.5>
+        <1,-1,-1>
+    }
+    face_indices{  //groups three vertices into a single "face" (triangle)
+        8
+        <0,1,2>
+        <1,5,4>      //allows for less duplication, much easier manipulation
+        <1,2,3>  //these numbers correspond to the above vertices
+        <1,3,4>
+        <2,6,7>
+        <2,3,7>
+        <3,7,4>
+        <7,8,4>
+        } 
+};
+
+#declare SwallowsNest=union{
+object{NestBitSq       
+            }
+object{NestBitSq
+    rotate<0,60,0>
+    translate<1.5,0,-.8>        
+            }
+object{NestBitSq
+    rotate<0,120,0>
+    translate<1.5,0,-2.5>        
+            }
+object{NestBitSq
+    rotate<0,180,0>
+    translate<0,0,-3.4>        
+            }
+object{NestBitSq
+    rotate<0,240,0>
+    translate<-1.5,0,-2.5>        
+            }
+object{NestBitSq
+    rotate<0,300,0>
+    translate<-1.5,0,-.75>        
+            }  
+            };
+            
+object{
+    SwallowsNest
+    texture{
+        pigment{
+            image_map{
+                jpeg "Thatch.jpg"
+                }
+            scale 15    
+                }
+                }
+        finish{
+            roughness 10
+            }
+     scale 6               
+                }                                                                        
         
 
 #declare CentralCameraPos= <0,EyeHeight,0>;
@@ -650,8 +832,8 @@ object{TackTrunkTrimLong}
 #declare TopCameraPos= <0,2000,0>;  
 
 camera{
-    location FrontEntry
-    look_at <200,EyeHeight,0>                 
+    location FrontEntry            //<-50,EyeHeight,-200> <100,EyeHeight-80,-430> <-150,EyeHeight,-300> 
+    look_at CentralCameraPos                    //<200,0,-200>     <100,0,100>  <200,EyeHeight,-300>  
     }   
     
 light_source{
@@ -850,8 +1032,12 @@ background{rgb<0,.25,.55>}
         translate<1100,0,0>
         }
         };        
-        
-object{OuterBarn}           
+                                         
+object{OuterBarn} 
+box{
+    <-HalfBarnWidth,BarnHeight+1,-HalfBarnLength>
+    <HalfBarnWidth,BarnHeight+2,HalfBarnLength>
+    }          
 
 #declare InnerWallUnbarred=difference{        
     object{
@@ -1001,10 +1187,10 @@ object{
     
 object{OuterWindowGlass} 
 
-object{
+/*object{
     OuterWindowGlass
     translate <BarnWidth,0,0>
-    } 
+    }*/ 
     
 object{TackRoomDoor
     scale .9
@@ -1017,14 +1203,56 @@ object{
     translate <145,145,-385>} 
     
 object{Ceiling
-    translate <0,0,HalfBarnLength>} 
+    translate <0,0,HalfBarnLength>}  
     
-object{AisleFloor} 
+object{AisleFloor
+    texture{
+    pigment{
+        uv_mapping 
+        image_map{
+                jpeg "ConcreteTexture5.jpg"  
+                }
+            scale <2,.5,.5>    
+                }
+    normal{
+        uv_mapping
+        bump_map{
+            jpeg "ConcreteNormal4.jpg"
+            bump_size 1             
+        }           
+        scale 10
+        }
+    finish{
+        specular .25
+        roughness 4
+        }    
+        }
+        }       
 
 object{StallFloor}
 
 object{StallFloor
-    translate <800,0,0>
-    }
+    translate <700,0,0>
+    }     
     
-//add: nameplates (image map?) hooks for halters, trunk, door hinges(?), blankets, bird's nest?                                                   
+object{LightSwitchUnion}
+
+box{
+    <-HalfBarnWidth-200,-300,HalfBarnLength+1600>
+    <HalfBarnWidth+200,BarnHeight+300,HalfBarnLength+1599>
+    texture{
+        pigment{
+            image_map{
+                jpeg "Outside2.jpg"
+                }
+             scale 1400
+             translate<-500,-500,0>
+             }
+        finish{
+            ambient .7
+             }    
+             }
+             }   
+         
+    
+//add: nameplates (image map?), rafters?                                              

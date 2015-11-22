@@ -1,0 +1,31 @@
+background{
+    rgb<1,1,1>
+    } 
+    
+camera{
+    location<10,0,-10>
+    look_at_<0,0,0>
+    } 
+    
+light_source{
+    <0,0,-5>
+    rgb<1,1,1>
+    }       
+    
+mesh{
+    triangle{
+        <0,0,0>
+        <2,4,0>
+        <2,3,-1>
+        }
+     triangle{
+        <0,0,0>
+        <2,4,0>
+        <2,3,1>
+        }   
+     texture{
+        pigment{
+            rgb<.3,.6,.35>
+            }
+            }   
+        }    
