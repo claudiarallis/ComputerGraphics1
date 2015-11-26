@@ -1,7 +1,7 @@
 //doorknob code 
 
 background {
-    rgb<0,1,1>
+    rgb<.85,.85,.85>
     }
 
 #declare FrontCameraPos=<-5,5,5>;
@@ -10,9 +10,9 @@ background {
 #declare TopCameraPos=<0,20,0>;
 
 camera{
-    location FrontCameraPos
-    look_at <0,2,0>
-    }
+    location <-80,150,-200>          
+    look_at <200,0,-200>                     
+    }   
 
 light_source{
     <0,15,-30>
@@ -25,9 +25,13 @@ light_source{
     }
 
 light_source{
-    <15,20,30>
-    rgb <1,1,1>
-    }          
+    <-80,100,-250>
+    rgb <1,1,1> *1.5
+    }
+light_source{
+    <120,200,-300>
+    rgb <1,1,1> *3
+    }                
 
 #declare Doorknob=lathe{     //lathe makes it 3D around y axis
     cubic_spline //straight lines connect the dots
@@ -343,7 +347,7 @@ object{NestBitSq
             }        
                 } */ 
                 
-box{
+/*box{
     <0,0,0>
     <5,5,-5>
     texture{
@@ -400,7 +404,190 @@ object{
         scale 1 
         }
         }
-        }                         
+        }  */
+        
+
+#declare FadedTrunkTexture=                    
+        texture{
+            pigment{
+                rgb <.2,.1,.03>*.35
+                }
+            finish{
+                roughness 4
+                }        
+            }
+        texture{
+            pigment{
+                gradient <1,0,1>   
+                color_map{
+                    [.1 color rgbt <.2,.1,.03,1>]
+                    [.3 color rgbt <.2,.1,.03,1>]
+                    [.6 color rgbt <.6,.6,.6,.95>]
+                    [.9 color rgbt <.2,.1,.03,1>]
+                    } 
+                turbulence 1.5
+                scale 85  
+            }
+            finish{
+                roughness 4 
+                }           
+            };         
+#declare FadedTrimTexture=                    
+        texture{
+            pigment{
+                rgb <.13,.1,.1>*.75
+                }
+            finish{
+                roughness 2
+                }        
+            }
+        texture{
+            pigment{
+                gradient <1,1,0>   
+                color_map{
+                    [.1 color rgbt <.13,.1,.1,1>]
+                    [.4 color rgbt <.13,.1,.1,1>]
+                    [.6 color rgbt <.6,.6,.6,.95>]
+                    [.8 color rgbt <.13,.1,.1,1>]
+                    } 
+                turbulence 1.5
+                scale  80 
+            }
+            finish{
+                roughness 2 
+                }           
+            };         
+#declare TrunkBase=prism{
+    linear_sweep
+    linear_spline
+    0,80
+    8
+    <0,0>
+    <0,45>
+    <12,53>
+    <24,55>
+    <36,53>
+    <48,45>
+    <48,0>
+    <0,0>
+    };
+    
+object{
+    TrunkBase
+    texture{FadedTrunkTexture}    
+    scale 1.35        
+    rotate<-90,0,0>
+    translate <80,-2,-160>        
+            }
+#declare TackTrunkEnd=prism{
+    linear_sweep
+    linear_spline
+    0,2
+    8
+    <0,0>
+    <0,45>
+    <12,53>
+    <24,55>
+    <36,53>
+    <48,45>
+    <48,0>
+    <0,0>
+    texture{
+        pigment{
+            rgb<.13,.1,.1>*.75            //add texture here
+            }
+            }
+    };   
+#declare TackTrunkEndTrim=difference{
+    object{TackTrunkEnd
+        scale <1.35,1,1.35>
+        rotate<-90,0,0>}
+    object{TackTrunkEnd
+        scale <1.12,3,1.13>
+        rotate<-90,0,0>
+        translate<6,6,2>}
+    };                
+#declare TackTrunkTrimBig=box{
+    <79,0,-159>
+    <146,6,-269>
+    texture{                            
+        FadedTrimTexture
+            }
+            };             
+#declare TackTrunkTrimLong=box{
+    <78,0,-159>
+    <79,5,-268>
+    texture{
+        FadedTrimTexture
+            }
+            };
+object{TackTrunkEndTrim
+    translate<80,0,-266.5>
+    }
+object{TackTrunkEndTrim
+    translate<80,0,-159>
+    }                
+object{TackTrunkTrimBig}
+object{TackTrunkTrimBig
+    scale .99
+    translate<1,40,-2>
+    }
+object{TackTrunkTrimLong
+    translate <1,55,0>
+    } 
+object{TackTrunkTrimLong
+    translate <66,55,0>
+    }    
+object{TackTrunkTrimLong
+    rotate <0,0,-55>
+    translate <34,124,0>
+    }
+object{TackTrunkTrimLong
+    rotate<0,0,55>
+    translate<100,-5,0>
+    }
+object{TackTrunkTrimLong
+    rotate<0,0,55>
+    translate<88,3,0>
+    } 
+object{TackTrunkTrimLong
+    rotate<0,0,-55>
+    translate <47,132,0> 
+    } 
+object{TackTrunkTrimLong
+    rotate<0,0,75>
+    translate<98,-4,0>
+    } 
+object{TackTrunkTrimLong
+    rotate<0,0,-75>
+    translate<88,148,0>
+    }
+#declare TackTrunkLatch=union{
+    box{
+        <75,45,-185>     
+        <76,50,-189>    
+        }
+    cylinder{
+        <75,45,-187>     
+        <76,45,-187>
+        2
+        }
+    texture{
+        pigment{
+            rgb<.13,.1,.1>
+            }
+            }
+        };            
+object{TackTrunkLatch
+    translate<4,-3,0>}
+object{TackTrunkLatch
+    scale <1,1.5,1.5>
+    translate<4,-28,65>
+    }
+object{TackTrunkLatch
+    translate<4,-3,-55>
+    } 
+                                  
            
             
                                                                                                               

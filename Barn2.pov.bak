@@ -832,8 +832,8 @@ object{
 #declare TopCameraPos= <0,2000,0>;  
 
 camera{
-    location CentralCameraPos            //<-50,EyeHeight,-200> <100,EyeHeight-80,-430> <-150,EyeHeight,-300> 
-    look_at <0,0,0>                    //<200,0,-200>     <100,0,100>  <200,EyeHeight,-300>  
+    location FrontEntry            //<-50,EyeHeight,-200> <100,EyeHeight-80,-430> <-150,EyeHeight,-300> 
+    look_at CentralCameraPos                    //<200,0,-200>     <100,0,100>  <200,EyeHeight,-300>  
     }   
     
 light_source{
@@ -1208,21 +1208,26 @@ object{Ceiling
 object{AisleFloor
     texture{
     pigment{
+        uv_mapping 
         image_map{
-                jpeg "ConcreteTexture.jpg"
+                jpeg "ConcreteTexture5.jpg"  
                 }
-            scale 1 //.001   
+            scale <2,.5,.5>    
                 }
     normal{
         uv_mapping
         bump_map{
-            jpeg "ConcreteNormal2.jpg"
-            bump_size 1               
+            jpeg "ConcreteNormal4.jpg"
+            bump_size 1             
+        }           
+        scale 10
         }
-        scale 1 //.001  //when using uv mapping, scale should generally be small
+    finish{
+        specular .25
+        roughness 4
+        }    
         }
-        }
-        } 
+        }       
 
 object{StallFloor}
 
@@ -1230,6 +1235,24 @@ object{StallFloor
     translate <700,0,0>
     }     
     
-object{LightSwitchUnion}     
+object{LightSwitchUnion}
+
+box{
+    <-HalfBarnWidth-200,-300,HalfBarnLength+1600>
+    <HalfBarnWidth+200,BarnHeight+300,HalfBarnLength+1599>
+    texture{
+        pigment{
+            image_map{
+                jpeg "Outside2.jpg"
+                }
+             scale 1400
+             translate<-500,-500,0>
+             }
+        finish{
+            ambient .7
+             }    
+             }
+             }   
+         
     
-//add: nameplates (image map?),                                              
+//add: nameplates (image map?), rafters?                                              

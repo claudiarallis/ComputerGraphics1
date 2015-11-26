@@ -66,7 +66,7 @@
 #declare PannelHeight=25;
 #declare RoofPannelHeight=35;
 
-#declare NumRoofPannels=19;
+#declare NumRoofPannels=17;
 #declare Ceiling=union{
     #declare Index=-NumRoofPannels;
     #while (Index<=NumRoofPannels)
@@ -532,8 +532,8 @@ difference{
 
 //aisle lights
 #declare LightBox=box{
-    <-130,BarnHeight-45,0>
-    <130,BarnHeight-25,35>
+    <-130,BarnHeight-35,18>
+    <130,BarnHeight-15,-18>
     texture{
         pigment{
             rgb<.25,.25,.25>
@@ -544,8 +544,8 @@ difference{
             }    
             };
 #declare Light=box{
-    <-125,BarnHeight-46,5>
-    <125,BarnHeight-26,30>
+    <-125,BarnHeight-36,14>
+    <125,BarnHeight-16,-14>
     texture{
         pigment{
             rgb<1,1,1>
@@ -570,7 +570,7 @@ difference{
 #declare OverHeadLight=union{
     object{LightBox}
     object{Light}
-    object{LightSupport}                                                    //LIGHTS
+    object{LightSupport}                                                    
 object{LightSupport
     translate<160,0,0>
     }  
@@ -578,10 +578,10 @@ object{LightSupport
                   
 object{OverHeadLight}
 object{OverHeadLight
-    translate <0,0,350>
+    translate <0,0,400>
     }
 object{OverHeadLight
-    translate <0,0,-350>
+    translate <0,0,-400>
     }  
     
 #declare LightSwitchBox=box{
@@ -806,24 +806,49 @@ object{NestBitSq
     rotate<0,300,0>
     translate<-1.5,0,-.75>        
             }  
-            };
+            }; 
             
-object{
-    SwallowsNest
+//rafters
+#declare RafterBeam=box{
+    <-HalfBarnWidth,BarnHeight-25,HalfBarnLength>
+    <HalfBarnWidth,BarnHeight,HalfBarnLength+20>
     texture{
         pigment{
-            image_map{
-                jpeg "Thatch.jpg"
-                }
-            scale 15    
-                }
-                }
-        finish{
-            roughness 10
+            WoodPigment2}
             }
-     scale 6               
-                }                                                                        
-        
+            };
+#declare RafterWidth=15;
+#declare RafterInterval=220;
+
+#declare NumRafters=3;
+#declare Rafters=union{
+    #declare Index=-NumRafters;
+    #while (Index<=NumRafters)
+    object{
+        RafterBeam
+        translate<0,0,Index*(RafterInterval+RafterWidth)>
+    }
+    #declare Index=Index+1;
+    #end
+    };
+
+//Nameplates
+#declare NameplateBase=box{
+    <-139,130,-325>
+    <-140,143,-300>
+    texture{
+        pigment{
+            rgb<.5,.3,.1>
+            }
+        finish{
+            specular .75
+            roughness .001
+            metallic
+            }
+            }
+            };
+object{NameplateBase}                                                          //YOU ARE HERE
+            
 
 #declare CentralCameraPos= <0,EyeHeight,0>;
 #declare OuterCameraPos= <0,650,-2000>;
@@ -832,7 +857,7 @@ object{
 #declare TopCameraPos= <0,2000,0>;  
 
 camera{
-    location FrontEntry            //<-50,EyeHeight,-200> <100,EyeHeight-80,-430> <-150,EyeHeight,-300> 
+    location FrontEntry          //<-50,EyeHeight,-200> <100,EyeHeight-80,-430> <-150,EyeHeight,-300> 
     look_at CentralCameraPos                    //<200,0,-200>     <100,0,100>  <200,EyeHeight,-300>  
     }   
     
@@ -1187,10 +1212,10 @@ object{
     
 object{OuterWindowGlass} 
 
-/*object{
+object{
     OuterWindowGlass
     translate <BarnWidth,0,0>
-    }*/ 
+    }
     
 object{TackRoomDoor
     scale .9
@@ -1203,7 +1228,7 @@ object{
     translate <145,145,-385>} 
     
 object{Ceiling
-    translate <0,0,HalfBarnLength>}  
+    translate <0,0,HalfBarnLength-20>}  
     
 object{AisleFloor
     texture{
@@ -1235,9 +1260,29 @@ object{StallFloor
     translate <700,0,0>
     }     
     
-object{LightSwitchUnion}
+object{LightSwitchUnion}  
 
-box{
+object{
+    SwallowsNest
+    texture{
+        pigment{
+            image_map{
+                jpeg "Thatch.jpg"
+                }
+            scale 15    
+                }
+                }
+        finish{
+            roughness 10
+            }
+     scale 6 
+     translate<-95,BarnHeight-10,0>              
+                }  
+             
+object{Rafters
+    translate<0,0,-HalfBarnLength+100>}                                                                                        
+
+/*box{
     <-HalfBarnWidth-200,-300,HalfBarnLength+1600>
     <HalfBarnWidth+200,BarnHeight+300,HalfBarnLength+1599>
     texture{
@@ -1252,7 +1297,7 @@ box{
             ambient .7
              }    
              }
-             }   
+             } */  
          
     
-//add: nameplates (image map?), rafters?                                              
+//add: nameplates (image map? Venture, Ballan, Black Jack, Maeve, Sunday), one final camera pos - Swallow Cam                                             

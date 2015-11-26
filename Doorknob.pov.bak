@@ -385,10 +385,11 @@ object{
     AisleFloor
     texture{
     pigment{
+        uv_mapping 
         image_map{
-                jpeg "ConcreteTexture2.jpg" 
+                jpeg "ConcreteTexture.jpg" 
                 }
-            scale 1 //.001   
+            scale <.02,.005,.005>    
                 }
     normal{
         uv_mapping
@@ -396,7 +397,7 @@ object{
             jpeg "ConcreteNormal4.jpg"
             bump_size 1             
         }           
-        scale 1 //.001  //when using uv mapping, scale should generally be small
+        scale 1 
         }
         }
         }                         
