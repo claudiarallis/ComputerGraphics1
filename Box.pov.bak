@@ -1,0 +1,18 @@
+#include "colors.inc"
+
+camera{
+    location <0,0,-5>
+    look_at <0,0,0> }
+    
+    light_source{
+        <2,2,-4> 
+        rgb<1,1,1>
+        }
+        
+#declare Box=box{
+    <-1,-1,-2>
+    <1,1,4>
+    };
+    
+object{box}
+    
