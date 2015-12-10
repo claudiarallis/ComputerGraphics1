@@ -27,7 +27,11 @@
     scale <600,100,100>
     };
     
-             
+#declare BlackTexture=texture{
+    pigment{
+        rgb<.1,.1,.1>
+        }
+        };             
 //basic barn stuff
 #declare BarnWidth=1100;
 #declare BarnLength=1200;
@@ -55,17 +59,15 @@
 #declare FrontStallWindowLong=box{
     <-HalfBarnWidth+395,BarnHeight-300,10-HalfBarnLength>
     <-HalfBarnWidth+405,BarnHeight-150,HalfBarnLength-10>
+    texture{
+        BlackTexture
+            }
     };
 
 //the ceiling    
 #declare CeilingPannel=box{
     <-HalfBarnWidth,BarnHeight-4,-HalfBarnLength>
     <HalfBarnWidth,BarnHeight,-HalfBarnLength+35>
-    /*texture{
-        pigment{
-            WoodPigment2
-            }
-            } */
     };        
     
 #declare PannelHeight=25;
@@ -93,11 +95,6 @@
 #declare FrontStallPannel=box{
     <-HalfBarnWidth+398,0,-HalfBarnLength>
     <-HalfBarnWidth+402,PannelHeight,HalfBarnLength>
-    /*texture{
-        pigment{
-            WoodPigment
-            }
-            } */
     };  
     
 #declare NumPannels=17;
@@ -121,21 +118,22 @@
 #declare FrontStallWindowShort=box{
     <146,BarnHeight-300,-200>
     <153,BarnHeight-150,HalfBarnLength-10>
+    texture{
+        BlackTexture
+            }
     }; 
 
 #declare SideStallWindow=box{
     <-HalfBarnWidth,BarnHeight-300,-StallLength-5>     
     <-HalfBarnWidth+401,BarnHeight-150,-StallLength+5>
+    texture{
+        BlackTexture
+            }
             }; 
     
 #declare SideStallPannel=box{
     <-HalfBarnWidth,0,-StallLength-2>
     <-150,25,-StallLength+2>
-    /*texture{
-        pigment{
-            WoodPigment2
-            }
-            }*/
             };     
     
 #declare WoodWallShort=union{
@@ -145,7 +143,7 @@
         SideStallPannel
         translate<0,Index*(PannelHeight+1),0>
         texture{
-            pigment{                                               //this may be wrong
+            pigment{                                               
                 WoodPigment2
                 translate <Index*20,Index*40,Index*6>
                 }
@@ -219,7 +217,7 @@
     1.5
     texture{RustyTexture}
     };   
-                                                                           //FIGURE THIS OUT
+                                                                           
 #declare NumBars=40;    
 #declare StallBars=union{
     #declare Index=-NumBars;
@@ -242,7 +240,19 @@
        }
     #declare Index=Index+1;
     #end
-    }; 
+    };
+#declare NumBars3=20;    
+#declare StallBars3=union{                                                             
+    #declare Index=-NumBars3;
+    #while (Index<=NumBars3)
+    object{
+        StallBar
+        translate<0,0,Index*15> 
+       }
+    #declare Index=Index+1;
+    #end
+    };
+          
               
 //window stuff starts here
 #declare OuterWindow=box{
@@ -256,7 +266,7 @@
     <-HalfBarnWidth+405,BarnHeight-150,HalfBarnLength-10>
     texture{
         pigment{
-            color rgbt<1,1,1,.95> //the t is "transmit", and controls transparency
+            color rgbt<1,1,1,.95>
             }
         finish{
             ambient 0
@@ -269,7 +279,7 @@
         }
         } 
       interior{   //tells POVray what to do with the inside of the objects - good for transparents
-        ior 1.5 //index of refraction of glass ...water is 1.33, 2.4 is diamond
+        ior 1.5 
         fade_color <0,1,0> //using this interior stuff on an opaque object will make it GLOSSY
         }      //fresnel will NOT WORK without an interior specified       
     translate<-400,0,0>
@@ -295,11 +305,6 @@
 #declare StallDoorPanel=box{
     <-HalfBarnWidth+400,0,-393>
     <-HalfBarnWidth+405,PannelHeight,-207>
-    /*texture{
-        pigment{
-            WoodPigment
-            }
-            }*/
     };  
     
 #declare NumPannelsDoor=11;
@@ -312,7 +317,7 @@
         texture{
             pigment{
                 WoodPigment
-                translate<Index*10,Index*22,Index*3>
+                translate<Index*8,Index*22,Index*3>
                 }
                 }
     }
@@ -324,9 +329,7 @@
     <-HalfBarnWidth+399,BarnHeight-300,-395>
     <-HalfBarnWidth+410,BarnHeight-155,-205>
     texture{                                  
-        pigment{
-            rgb<.1,.1,.1>
-            }
+        BlackTexture
             }
     };
     
@@ -357,7 +360,13 @@
     texture{
         pigment{
             rgb<.5,.5,.5>
-            }
+            } 
+        finish{
+            specular .75
+            roughness .15
+            reflection .1
+            metallic
+            }                                                      
         }
     };
     
@@ -367,7 +376,7 @@
     texture{
         pigment{
             rgb<.75,.75,.75>
-            }
+            }   
         }
     };
     
@@ -383,11 +392,6 @@
     texture{
         pigment{
             rgb <.75,.75,.75>
-            }
-        finish{
-            specular .5
-            roughness .25
-            metallic
             }    
             }
     translate <-144,0,-215>        
@@ -478,7 +482,7 @@
             rgb<.95,.95,.95>
             }
         finish{    
-            roughness 0.75
+            roughness 0.5
             specular .35
             }    
             }
@@ -491,7 +495,7 @@
             rgb<.9,.9,.9>
             }
         finish{    
-            roughness 0.85
+            roughness 0.5
             specular .35
             }
             }
@@ -542,25 +546,9 @@ difference{
         };
         
 //floor of main aisle
-#declare ConcreteColorMap=color_map{          
-    [0.1 color <.45,.45,.45>]
-    [0.3 color <.2,.2,.2>]              
-    [0.4 color <.3,.3,.3>]
-    [0.9 color <.4,.4,.4>]
-    };
-#declare ConcretePigment=pigment{
-    bumps
-    color_map {ConcreteColorMap}
-    scale 4
-    };
-
 #declare AisleFloor=box{
     <-150,-1,-HalfBarnLength>
     <150,.5,HalfBarnLength>
-    /*texture{
-        pigment{ConcretePigment
-            }
-            }  */
     };
 
 //floor of stalls
@@ -589,8 +577,9 @@ difference{
             }
             }
         finish{
-            specular .5
-            roughness .25
+            specular .75
+            roughness .15 
+            reflection .1
             metallic
             }    
             };
@@ -612,9 +601,7 @@ difference{
     <-80,BarnHeight,0>
     4
     texture{
-        pigment{
-            rgb<.1,.1,.1>
-            }
+        BlackTexture
             }
             };        
     
@@ -649,7 +636,7 @@ object{OverHeadLight
     <4,2,2>
     texture{
         pigment{
-            rgb<1,1,1>                                        //YOU NEED TO CHANGE THESE
+            rgb<1,1,1>                                        
             }
             }
     rotate<0,0,45>
@@ -680,22 +667,21 @@ object{OverHeadLight
     color_map {DirtyTrunkColorMap}
     turbulence 1.15
     scale <60,38,70>
-    //translate<0,5,10>
     };  
 #declare WornTrunkColorMap=
                     color_map{
                     [.1 color rgbt <.3,.2,.13,1>]
                     [.3 color rgbt <.3,.2,.13,1>]
                     [.5 color rgbt <.3,.2,.13,1>]              
-                    [.7 color rgbt <.2,.2,.2,.94>]
+                    [.7 color rgbt <.2,.2,.2,.96>]
                     [.8 color rgbt <.3,.2,.13,1>]
                     [.9 color rgbt <.3,.2,.13,1>]                
     };
 #declare TrunkBumpsPigment2=pigment{
     bumps
     color_map {WornTrunkColorMap}
-    turbulence 1
-    scale <1.75,3.5,1.75>
+    turbulence 1                
+    scale <.5,3.5,1.75>
     };   
 #declare WornTrunkColorMap2=
                     color_map{
@@ -730,7 +716,7 @@ object{OverHeadLight
                }
                 }
          texture{
-            pigment{
+            pigment{ 
             TrunkBumpsPigment2                   
             }
             finish{
@@ -750,7 +736,7 @@ object{OverHeadLight
 #declare WornTrimColorMap=color_map{
                     [.1 color rgbt <.12,.1,.1,1>]
                     [.5 color rgbt <.12,.1,.1,1>]  
-                    [.7 color rgbt <.16,.14,.14,.85>] 
+                    [.7 color rgbt <.14,.14,.14,.85>] 
                     [.9 color rgbt <.12,.1,.1,1>] 
     };
 #declare WornTrimBumpsPigment=pigment{
@@ -758,22 +744,28 @@ object{OverHeadLight
     color_map {WornTrimColorMap}
     scale <17,17,17>
     turbulence 4
-    };                    
-#declare FadedTrimTexture=                    
+    }; 
+                          
+#declare FadedTrimTexture=                   
         texture{
             pigment{
-                rgb <.13,.1,.1>*.75
+                rgb <.12,.1,.1>*.75
                 }
-            finish{
-                roughness 2
+            finish{ 
+                specular .25
+                roughness .75
                 }        
             }
         texture{
-            pigment{WornTrimBumpsPigment}
-            finish{
-                roughness 2 
+            pigment{
+                WornTrimBumpsPigment
+               }
+            finish{ 
+                specular .25
+                roughness .75 
                 }           
-            };         
+            }; 
+                    
 #declare TrunkBase=prism{
     linear_sweep
     linear_spline
@@ -827,14 +819,11 @@ object{
     <146,6,-269>
     texture{                            
         FadedTrimTexture
-            }
+            } 
             };             
 #declare TackTrunkTrimLong=box{
     <78,0,-159>
     <79,5,-268>
-    texture{
-        FadedTrimTexture
-            }
             };
 object{TackTrunkEndTrim
     translate<80,0,-266.5>
@@ -849,33 +838,48 @@ object{TackTrunkTrimBig
     }
 object{TackTrunkTrimLong
     translate <1,55,0>
+    texture{FadedTrimTexture}
     } 
 object{TackTrunkTrimLong
     translate <66,55,0>
+    texture{FadedTrimTexture
+        translate<0,0,40>
+        }
     }    
 object{TackTrunkTrimLong
     rotate <0,0,-55>
     translate <34,124,0>
+    texture{FadedTrimTexture}
     }
 object{TackTrunkTrimLong
     rotate<0,0,55>
     translate<100,-5,0>
+    texture{FadedTrimTexture
+        translate<0,0,100>
+        }
     }
 object{TackTrunkTrimLong
     rotate<0,0,55>
     translate<88,3,0>
+    texture{FadedTrimTexture
+        translate<15,15,15>}
     } 
 object{TackTrunkTrimLong
     rotate<0,0,-55>
-    translate <47,132,0> 
+    translate <47,132,0>
+    texture{FadedTrimTexture
+        translate<0,0,205>
+        } 
     } 
-object{TackTrunkTrimLong                                              //THE TRUNK LOOKS ODD FROM THE SIDE
+object{TackTrunkTrimLong
     rotate<0,0,75>
-    translate<98,-4,0>
+    translate<98,-4,0> 
+    texture{FadedTrimTexture}
     } 
 object{TackTrunkTrimLong
     rotate<0,0,-75>
     translate<88,148,0>
+    texture{FadedTrimTexture}
     }
 #declare TackTrunkLatch=union{
     box{
@@ -889,7 +893,7 @@ object{TackTrunkTrimLong
         }
     texture{
         pigment{
-            rgb<.13,.1,.1>
+            rgb<.12,.1,.1>
             }
             }
         };            
@@ -907,21 +911,21 @@ object{TackTrunkLatch
 #declare NestBitSq=mesh2{
     vertex_vectors{
         9
-        <-1,1,-.5>//vertex 0
-        <0,1,.5>    //order here doesn't matter
+        <-1,1,-.5>
+        <0,1,.5>    
         <-1,0,.25>
         <0,0,.5>
-        <1,0,0>//vertex 4 
+        <1,0,0>
         <1,1,-.5>
         <-1,-1,-1>
         <0,-1,-.5>
         <1,-1,-1>
     }
-    face_indices{  //groups three vertices into a single "face" (triangle)
+    face_indices{  
         8
         <0,1,2>
-        <1,5,4>      //allows for less duplication, much easier manipulation
-        <1,2,3>  //these numbers correspond to the above vertices
+        <1,5,4>      
+        <1,2,3>  
         <1,3,4>
         <2,6,7>
         <2,3,7>
@@ -959,10 +963,6 @@ object{NestBitSq
 #declare RafterBeam=box{
     <-HalfBarnWidth,BarnHeight-25,HalfBarnLength>
     <HalfBarnWidth,BarnHeight,HalfBarnLength+20>
-    texture{
-        pigment{
-            WoodPigment2}
-            }
             };
 #declare RafterWidth=15;
 #declare RafterInterval=220;
@@ -974,13 +974,37 @@ object{NestBitSq
     object{
         RafterBeam
         translate<0,0,Index*(RafterInterval+RafterWidth)>
+        texture{
+            pigment{
+                WoodPigment2
+                translate<Index*20,Index*40,Index*6>
+                }
+                }
     }
     #declare Index=Index+1;
     #end
-    };
+    }; 
+    
+#declare OutsideBoxLong=             
+box{
+    <-HalfBarnWidth-400,860,1600>
+    <-HalfBarnWidth-499,-860,-1600>
+    texture{
+        pigment{
+            image_map{
+                jpeg "1_Outside4.jpg"
+                }
+             rotate<0,90,0>   
+             scale 2200                          
+             translate<-600,-1450,0>              
+             }
+        finish{
+            ambient .7
+             }    
+             }
+             };    
 
-                                                          //YOU ARE HERE
-            
+                                                          //YOU ARE HERE           
 
 #declare CentralCameraPos= <0,EyeHeight,0>;
 #declare OuterCameraPos= <0,650,-2000>;
@@ -992,15 +1016,18 @@ camera{
     //aperture .75 
     //blur_samples 40
     //focal_point  <100,EyeHeight-50,0>
-    location FrontEntry        //<-50,EyeHeight,-200> <100,EyeHeight-80,-430> <-150,EyeHeight,-300> 
-    look_at CentralCameraPos                   //<200,0,-200>     <100,0,100>  <200,EyeHeight,-300>  
-    }
+    location BackEntry      //<-50,EyeHeight,-200> <100,EyeHeight-80,-430> <-150,EyeHeight,-300> 
+    look_at FrontEntry                //<200,0,-200>     <100,0,100>  <200,EyeHeight,-300>  
+    } 
+    
+/*media{                                //makes fog and dust and such
+    scattering {100, rgb .01}
+    intervals 1
+    samples 20 
+    method 3 
+    }   */    
     
 global_settings{
-    //radiosity{
-        //Rad_Settings(Radiosity_Normal,off,off)//type of radiosity, whether to ignore normals and stuff like mist
-       // }
-        //} 
     radiosity {
       pretrace_start 0.08
       pretrace_end   0.04
@@ -1032,14 +1059,14 @@ light_source{
 light_source{
     <80,BarnHeight-46,0>     //Flourescent Light_Right
     rgb<1,1,1> *.25
-    } */         
+    } */ 
     
 #declare SunLight=light_source{
-    <BarnWidth*2,BarnHeight*2,-BarnLength/2>
+    <-HalfBarnWidth-300,BarnHeight+125,-100>//<-BarnWidth*2,BarnHeight*2,-BarnLength/2>        
     rgb<.85,.8,.75> 
     parallel
-    point_at<HalfBarnWidth,EyeHeight,HalfBarnLength>
-    };
+    point_at<HalfBarnWidth,EyeHeight,HalfBarnLength> 
+    };  
     
 light_source{SunLight}  
 
@@ -1163,26 +1190,9 @@ light_source{BounceLight3}   */
 
 background{
     rgb <1,1,1>
-            }//{rgb<0,.25,.55>}   
-            
-
-/*#declare BarnWallBaseStructure=difference{
-       object{
-            Barn}
-       object{
-            Barn
-            scale .999
-            }
-       texture{
-            pigment{
-                rgb<1,1,1>
-                }
-                }     
-            };*/            
+            }//{rgb<0,.25,.55>}            
 
 #declare OuterBarnWalls=union{
-    /*object{
-        BarnWallBaseStructure}*/
     object{
         EndWall}
     object{
@@ -1202,8 +1212,6 @@ background{
 #declare OuterBarn=difference{
     object{
         OuterBarnWalls}
-    /*object{Barn
-        translate<0,BarnHeight-10,0>}*/
     object{
         MainDoorwayCutout}
     object{
@@ -1267,8 +1275,8 @@ difference{
     object{
         InnerWallUnbarredShort}
     object{
-        StallBars
-        translate<300,0,0>}
+        StallBars3
+        translate<300,0,110>}                                       
         };                      
                    
 difference{                   
@@ -1442,22 +1450,44 @@ object{
 object{Rafters
     translate<0,0,-HalfBarnLength+100>}                                                                                        
 
-/*box{
+box{
     <-HalfBarnWidth-200,-300,HalfBarnLength+1600>
-    <HalfBarnWidth+200,BarnHeight+300,HalfBarnLength+1599>
+    <HalfBarnWidth+200,BarnHeight+300,HalfBarnLength+1599>//<-HalfBarnWidth-200,-300,HalfBarnLength+1600>
+    //<HalfBarnWidth+200,BarnHeight+300,HalfBarnLength+1599>
     texture{
         pigment{
             image_map{
-                jpeg "Outside2.jpg"
+                jpeg "1_Outside1.jpg"
                 }
-             scale 1400
-             translate<-500,-500,0>
+             scale 1400                          //1400
+             translate<-700,-300,0>              //<-500,-500,0>
              }
         finish{
             ambient .7
              }    
              }
-             } */  
-         
-    
-//add: dust
+             }
+             
+box{
+    <-HalfBarnWidth-200,-300,HalfBarnLength-1600>
+    <HalfBarnWidth+200,BarnHeight+300,HalfBarnLength-1599>//<-HalfBarnWidth-200,-300,HalfBarnLength+1600>
+    //<HalfBarnWidth+200,BarnHeight+300,HalfBarnLength+1599>
+    texture{
+        pigment{
+            image_map{
+                jpeg "1_Outside3.jpg"
+                }
+             scale 1000                          //1400
+             translate<-600,-150,0>              //<-500,-500,0>
+             }
+        finish{
+            ambient .7
+             }    
+             }
+             }   
+
+object{OutsideBoxLong} 
+object{OutsideBoxLong
+    translate<HalfBarnWidth*2+800,0,0>}                                       
+             
+//to do: clean up code - especially the skylights; add scenery outside; continue to play with textures             
